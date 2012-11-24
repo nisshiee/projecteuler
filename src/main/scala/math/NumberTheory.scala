@@ -16,4 +16,14 @@ trait NumberTheory {
       (xabs > yabs)? rec(xabs, yabs) | rec(yabs, xabs)
     }
   }
+
+  def isPrime: BigInt => Boolean = Memo.weakHashMapMemo { (x: BigInt) =>
+    if (x < 2) false
+    else if (x === 2 || x === 3) true
+    else {
+      val aroundSqrt = BigInt(10) pow (x.toString.length / 2 + 1) min (x - 1)
+      val elems = EphemeralStream(BigInt(2)) ++ (BigInt(3) |==> (2, aroundSqrt))
+      elems forall { (y: BigInt) => x % y =/= 0 }
+    }
+  }
 }
