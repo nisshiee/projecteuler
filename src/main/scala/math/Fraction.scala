@@ -38,15 +38,12 @@ trait FractionInstances {
     val zero: Fraction = Fraction(0, 1)
   }
 
-  implicit val fractionMultiplicationGroup = new Group[Fraction @@ Multiplication] {
+  implicit val fractionMultiplicationSemiGroup = new Semigroup[Fraction @@ Multiplication] {
 
     type F = Fraction @@ Multiplication
     def F(n: BigInt, d: BigInt) = Multiplication(Fraction(n, d))
 
     def append(f1: F , f2: => F): F = F(f1.n * f2.n, f1.d * f2.d)
-
-    def inverse(f: F): F = F(f.d, f.n)
-
     val zero: F = F(1, 1)
   }
 
@@ -58,6 +55,6 @@ trait FractionOps {
 
   def self: Fraction
 
-  def unary_~ = -Multiplication(self)
+  def unary_~ = Fraction(self.d, self.n)
 }
 
